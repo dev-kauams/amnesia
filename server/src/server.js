@@ -5,7 +5,7 @@ const server = express()
 server.use(express.json())
 server.use(routes)
 
-server.listen(6700, () => {
+server.listen(6767, () => {
     console.log("Servidor funcionando.")
 })
 
