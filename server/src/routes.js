@@ -24,7 +24,22 @@ routes.get("/topicos/:id", (req, res) => {
     const id = parseInt(req.params.id)
     const topico = topicos.find(item => item.id === id)
     const status = topico ? 200 : 404
+
     return res.status(status).json(topico)
+})
+
+routes.put("/topicos/:id", (req, res) => {
+    const id = Number(req.params.id)
+    const {titulo} = req.body
+    const index = topicos.findIndex(item => item.id === id)
+    const status = index >= 0 ? 200 : 404
+
+    if (index === -1) {
+        return res.status(status).json({message: "ID não encontrado."})
+    }
+
+    topicos[index] = {id: Number(id), titulo: titulo} 
+    return res.status(status).json(topicos[index])
 })
 
 export default routes
