@@ -29,12 +29,12 @@ routes.put("/topicos/:id", (req, res) => {
     const id = Number(req.params.id)
     const { titulo } = req.body
     if(!titulo){
-        return res.status(400).json({message: "Preencher os campos é obrigatório."})
+        return res.status(400).json({ message: "[ATENÇÃO]: É obrigatório preencher todos os campos." })
     }
     const index = topicos.findIndex(item => item.id === id)
 
     if (index === -1) {
-        return res.status(404).json({message: "ID não encontrado."})
+        return res.status(404).json({ message: "[ERRO]: Objeto não encontrado." })
     }
 
     topicos[index] = {id: Number(id), titulo: titulo} 
@@ -45,7 +45,7 @@ routes.put("/topicos/:id", (req, res) => {
 routes.post("/topicos", (req, res) => {
     const { titulo } = req.body
     if(!titulo){
-        return res.status(400).json({message: "Preencher os campos é obrigatório."})
+        return res.status(400).json({ message: "[ATENÇÃO]: É obrigatório preencher todos os campos." })
     }
 
     const proximoId = topicos.length + 1
@@ -57,6 +57,18 @@ routes.post("/topicos", (req, res) => {
 
     topicos.push(novoTopico)
     return res.status(201).json(novoTopico)
+})
+
+// Rota DELETE
+routes.delete("/topicos/:id", (req, res) => {
+    const id = Number(req.params.id)
+    const index = topicos.findIndex(item => item.id === id)
+    if(index === -1){
+        return res.status(404).json({ message: "[ERRO]: Objeto não encontrado." })
+    }    
+    topicos.splice(index, 1)
+
+    return res.status(200).json(topicos)
 })
 
 export default routes
