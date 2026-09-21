@@ -1,19 +1,17 @@
 import express from 'express'
+import fs from 'fs/promises'
 
 const routes = express.Router()
 
-// Array para teste
-const topicos = 
-    [
-        { id: 1, titulo: "Aprender React", concluido: false },
-        { id: 2, titulo: "Aprender Node.js", concluido: false },
-        { id: 3, titulo: "Aprender TypeScript", concluido: true }    
-    ]
+const dataTopics = await fs.readFile('./data/topics.json', 'utf-8')
+
+const topicos = JSON.parse(dataTopics)
 
 // Rota GET Geral
 routes.get("/topicos", (req, res) => {
     return res.status(200).json(topicos)
 })
+
 
 // Rota GET Específica
 routes.get("/topicos/:id", (req, res) => {
@@ -27,6 +25,7 @@ routes.get("/topicos/:id", (req, res) => {
 
     return res.status(200).json(topico)
 })
+
 
 // Rota PUT
 routes.put("/topicos/:id", (req, res) => {
@@ -43,10 +42,10 @@ routes.put("/topicos/:id", (req, res) => {
         return res.status(404).json({ message: "[ERRO]: Objeto não encontrado." })
     }
 
-    topicos[index] = 
-    { 
-        id: Number(id), 
-        titulo: titulo, 
+    topicos[index] =
+    {
+        id: Number(id),
+        titulo: titulo,
         concluido: concluido
     }
 
@@ -71,7 +70,7 @@ routes.patch("/topicos/:id", (req, res) => {
         return res.status(404).json({ message: "[ERRO]: Objeto não encontrado."})
     }
 
-    topicos[index] = 
+    topicos[index] =
     {
         ...topicos[index],
         ...req.body,
@@ -80,6 +79,8 @@ routes.patch("/topicos/:id", (req, res) => {
 
     return res.status(200).json(topicos[index])
 })
+
+
 
 // Rota POST
 routes.post("/topicos", (req, res) => {
@@ -92,7 +93,7 @@ routes.post("/topicos", (req, res) => {
     }
 
     const novoTopico =
-        { 
+        {
             id: proximoId,
             titulo: titulo,
         }
@@ -110,7 +111,7 @@ routes.delete("/topicos/:id", (req, res) => {
     // Tratamento de erro
     if(index === -1){
         return res.status(404).json({ message: "[ERRO]: Objeto não encontrado." })
-    }    
+    }
     topicos.splice(index, 1)
 
     return res.status(200).json(topicos)
