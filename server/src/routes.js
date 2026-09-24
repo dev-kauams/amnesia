@@ -138,7 +138,7 @@ routes.post("/topicos", async (req, res) => {
 
 
 // Rota DELETE
-routes.delete("/topicos/:id", (req, res) => {
+routes.delete("/topicos/:id", async (req, res) => {
     const id = Number(req.params.id)
     const index = topicos.findIndex(item => item.id === id)
 
@@ -148,7 +148,16 @@ routes.delete("/topicos/:id", (req, res) => {
     }
     topicos.splice(index, 1)
 
+    
+    try{
+        await fs.writeFile('../../data/topics.json', JSON.stringify(topicos, null, 2), 'utf-8')
+
+        console.log("Dados deletados com sucesso.")
     return res.status(200).json(topicos)
+    }catch (error) {
+        console.error('[ERRO] Falha ao falha ao deletar o arquivo:', error);
+        return res.status(500).json({ message: "[ERRO]: Falha ao deletar o arquivo." })
+    }
 })
 
 export default routes
