@@ -68,7 +68,7 @@ routes.put("/topicos/:id", async (req, res) => {
 
 
 // Rota PATCH
-routes.patch("/topicos/:id", (req, res) => {
+routes.patch("/topicos/:id", async (req, res) => {
     const id = Number(req.params.id)
     const { titulo, concluido } = req.body
     const index = topicos.findIndex(item => item.id === id)
@@ -91,7 +91,17 @@ routes.patch("/topicos/:id", (req, res) => {
         id: id
     }
 
+
+     try {
+        await fs.writeFile('../../data/topics.json', JSON.stringify(topicos, null, 2), 'utf-8')
+
+        console.log('Dados alterados com sucesso.')
     return res.status(200).json(topicos[index])
+
+     } catch (error) {
+        console.error('[ERRO] Falha ao escrever o arquivo:', error);
+        return res.status(500).json({ message: "[ERRO]: Falha ao escrever o arquivo." })
+     }
 })
 
 
