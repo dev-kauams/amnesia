@@ -1,9 +1,13 @@
 import express from 'express'
 import fs from 'fs/promises'
 
+import path from 'path'
+
+const PATH_TOPICS = path.resolve('data', 'topics.json')
+
 const routes = express.Router()
 
-const dataTopics = await fs.readFile('./data/topics.json', 'utf-8')
+const dataTopics = await fs.readFile(PATH_TOPICS, 'utf-8')
 
 const topicos = JSON.parse(dataTopics)
 
@@ -53,10 +57,10 @@ routes.put("/topicos/:id", async (req, res) => {
     
     
     try{
-        await fs.writeFile('../../data/topics.json', JSON.stringify(topicos, null, 2), 'utf-8')
+        await fs.writeFile(PATH_TOPICS, JSON.stringify(topicos, null, 2), 'utf-8')
 
         console.log('Dados alterados com sucesso.')
-    return res.status(200).json(topicos[index])
+        return res.status(200).json(topicos[index])
 
     }catch (error) {
         console.error('[ERRO] Falha ao escrever o arquivo:', error);
@@ -92,13 +96,13 @@ routes.patch("/topicos/:id", async (req, res) => {
     }
 
 
-     try {
-        await fs.writeFile('../../data/topics.json', JSON.stringify(topicos, null, 2), 'utf-8')
+     try{
+        await fs.writeFile(PATH_TOPICS, JSON.stringify(topicos, null, 2), 'utf-8')
 
         console.log('Dados alterados com sucesso.')
-    return res.status(200).json(topicos[index])
+        return res.status(200).json(topicos[index])
 
-     } catch (error) {
+     }catch (error) {
         console.error('[ERRO] Falha ao escrever o arquivo:', error);
         return res.status(500).json({ message: "[ERRO]: Falha ao escrever o arquivo." })
      }
@@ -125,12 +129,12 @@ routes.post("/topicos", async (req, res) => {
 
     topicos.push(novoTopico)
 
-    try {
-        await fs.writeFile('../../data/topics.json', JSON.stringify(topicos, null, 2), 'utf-8')
+    try{
+        await fs.writeFile(PATH_TOPICS, JSON.stringify(topicos, null, 2), 'utf-8')
 
         console.log("Dados salvos com sucesso.")
-    return res.status(201).json(novoTopico)
-    } catch (error) {
+        return res.status(201).json(novoTopico)
+    }catch (error) {
         console.error('[ERRO] Falha ao escrever o arquivo:', error);
         return res.status(500).json({ message: "[ERRO]: Falha ao escrever o arquivo." })
     }
@@ -150,10 +154,10 @@ routes.delete("/topicos/:id", async (req, res) => {
 
     
     try{
-        await fs.writeFile('../../data/topics.json', JSON.stringify(topicos, null, 2), 'utf-8')
+        await fs.writeFile(PATH_TOPICS, JSON.stringify(topicos, null, 2), 'utf-8')
 
         console.log("Dados deletados com sucesso.")
-    return res.status(200).json(topicos)
+        return res.status(200).json(topicos)
     }catch (error) {
         console.error('[ERRO] Falha ao falha ao deletar o arquivo:', error);
         return res.status(500).json({ message: "[ERRO]: Falha ao deletar o arquivo." })
