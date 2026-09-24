@@ -107,8 +107,8 @@ routes.patch("/topicos/:id", async (req, res) => {
 
 
 // Rota POST
-routes.post("/topicos", (req, res) => {
-    const { titulo } = req.body
+routes.post("/topicos", async (req, res) => {
+    const { titulo, concluido } = req.body
     const proximoId = topicos.length + 1
 
     // Tratamento de erro
@@ -120,10 +120,20 @@ routes.post("/topicos", (req, res) => {
         {
             id: proximoId,
             titulo: titulo,
+            concluido: concluido
         }
 
     topicos.push(novoTopico)
+
+    try {
+        await fs.writeFile('../../data/topics.json', JSON.stringify(topicos, null, 2), 'utf-8')
+
+        console.log("Dados salvos com sucesso.")
     return res.status(201).json(novoTopico)
+    } catch (error) {
+        console.error('[ERRO] Falha ao escrever o arquivo:', error);
+        return res.status(500).json({ message: "[ERRO]: Falha ao escrever o arquivo." })
+    }
 })
 
 
