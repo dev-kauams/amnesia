@@ -1,0 +1,68 @@
+.sidebar{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 15dvw;
+    height: 100vh;
+    background-color: #050514;
+
+    padding: 1rem;
+    gap: 2rem;
+
+    display: flex;
+    flex-direction: column;
+
+    transition: width 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+
+    .logo{
+        width: 40%;
+        color: transparent;
+
+        transition: animation 0.3s ease-in;
+        animation: none rotateLogo 2s linear infinite;
+
+        path{
+            stroke: #fff;
+            stroke-width: 2;
+            stroke-linejoin: round;
+            paint-order: stroke;
+            transition: all 0.3s ease;
+        }
+
+        &:hover{
+            color: #fff;
+            animation: none rotateLogo 3s linear infinite;
+            transition: all 0.3s ease;
+        }
+    }
+
+    ul{
+        li{
+            list-style: none;
+            text-decoration: none;
+
+            font-size: 1.2rem;
+
+            padding: 0.5rem;
+
+            color: #fff;
+
+            transition: all 0.1s ease;
+
+            &:hover{
+                /* font-style: italic; */
+                transform: skewX(-12deg);
+                font-weight: bold;
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+@keyframes rotateLogo {
+    0%{
+        transform: rotate(0deg);
+    }100%{
+        transform: rotate(360deg);
+    }
+}
